@@ -15,13 +15,13 @@ trait StrUtils
 
     protected static $snakeCache = [];
 
-    /**蛇格字符串转换成驼峰大小写
+    /**字符串转换成驼峰大小写
      * @param string $value
      * @return string
      * @author: hbh
      * @Time: 2020/7/11   8:53
      */
-    public static function snakeToStudlyCap(string $value): string
+    public static function studlyCap(string $value): string
     {
         $key = $value;
 
