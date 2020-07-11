@@ -10,40 +10,45 @@ namespace bydls\Utils;
 
 trait CodeUtil
 {
-    /**生成8位随机扰码
-     * @return false|string
-     * @author: hbh
-     * @Time: 2020/4/10   19:49
-     */
-    public static function getSalt()
-    {
-        $strs = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm";
-        return substr(str_shuffle($strs), mt_rand(0, strlen($strs) - 9), 8);
-    }
 
+    /**生成指定位数的随机数
+     * @param int $length
+     * @return string
+     * @throws \Exception
+     * @author: hbh
+     * @Time: 2020/7/11   10:27
+     */
+    public static function random(int $length = 16): string
+    {
+        $string = '';
+
+        while (($len = strlen($string)) < $length) {
+            $size = $length - $len;
+
+            $bytes = function_exists('random_bytes') ? random_bytes($size) : mt_rand();
+
+            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+        }
+
+        return $string;
+    }
     /**对密码进行加密
      * @param $password
-     * @param $salt
+     * @param $salt //建议自己保存一个固定的扰码
      * @return string
      * @author: hbh
      * @Time: 2020/4/9   19:14
      */
-    public static function hashMixed($password)
+    public static function hashMixed(string $password,string  $salt='bydls')
     {
         $pwd_md5 = md5($password);
-        $salt_md5 = md5(config('cipher.password_key')) ?: $pwd_md5;
+        $salt_md5 = isset($salt) ?md5($salt):$pwd_md5;
         $mixed = [];
         for ($i = 0; $i < 32; $i++) $mixed[$i] = $pwd_md5[$i] . $salt_md5[$i];
         $strMixed = implode("", $mixed);
         return md5($strMixed);
     }
-    /**
-     *  生成一个随机的小数
-     * @param int $min
-     * @param int $max
-     * @param int $precision
-     * @return float|int
-     */
+
     /**生成一个随机小数
      * @param int $min 最小边界
      * @param int $max  最大边界
