@@ -1,8 +1,7 @@
 {
     "name": "bydls/utils",
-    "description": "工具类\u001b[D\u001b[D\u001b[D\u001b常用工具类",
-    "type": "project",
-    "version": "1.0.0",
+    "description": "工具类 常用工具类",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
