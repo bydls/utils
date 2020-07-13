@@ -6,9 +6,10 @@
  */
 
 namespace bydls;
-use bydls\Utils\{CheckUtil,CodeUtil,DateUtil,FileUtil,RequestUtil,ChangeUtils,StrUtils};
+use bydls\Utils\{CheckUtil,CodeUtil,DateUtil,FileUtil,RequestUtil,ChangeUtils};
 
 class Utils
 {
-use CheckUtil,CodeUtil,DateUtil,FileUtil,RequestUtil,ChangeUtils,StrUtils;
+use CheckUtil,CodeUtil,DateUtil,FileUtil,RequestUtil,ChangeUtils;
+
 }

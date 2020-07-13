@@ -8,7 +8,7 @@
 namespace bydls\Utils;
 
 
-trait StrUtils
+class StrUtils
 {
 
     protected static $studlyCache = [];

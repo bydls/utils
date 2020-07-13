@@ -55,21 +55,5 @@ trait ChangeUtils
         return $obj;
     }
 
-    /**二维数组排序
-     * @param $array
-     * @param $on
-     * @param int $order
-     * @return array
-     * @author: hbh
-     * @Time: 2020/6/3   13:36
-     */
-    public static function array_sort($array, $on, $order = SORT_ASC)
-    {
-        if (!$array) {
-            return [];
-        }
-        $temp = array_column($array, $on);
-        array_multisort($temp, $order, $array);
-        return $array;
-    }
+
 }
