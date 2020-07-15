@@ -35,25 +35,7 @@ trait CheckUtil
     public static function checkNickname($nickname){
         return mb_strlen($nickname)>20?false:true;
     }
-    /**检查是否为本地环境
-     * @return bool
-     * @author: hbh
-     * @Time: 2020/4/9   16:25
-     */
-    public static function is_local()
-    {
-        return config('app.env') == 'local';
-    }
 
-    /**检查是否为生产环境
-     * @return bool
-     * @author: hbh
-     * @Time: 2020/4/9   16:25
-     */
-    public static function is_production()
-    {
-        return config('app.env') == 'production';
-    }
 
     /**检查手机号格式是否正确
      * @param $string

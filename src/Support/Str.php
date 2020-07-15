@@ -115,4 +115,15 @@ class Str
     {
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
+
+
+    /**判断以特定字符结尾
+     * @param String $haystack
+     * @param String $needles
+     * @return bool
+     */
+    public static function endsWith(String $haystack,String $needles):bool
+    {
+        return substr($haystack, -strlen($needles)) === (string) $needles?true:false;
+    }
 }
