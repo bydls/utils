@@ -52,7 +52,7 @@ class Str
         if (!ctype_lower($value)) {
             $value = preg_replace('/\s+/u', '', ucwords($value));
 
-            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, $value));
+            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
 
         return static::$snakeCache[$key][$delimiter] = $value;
@@ -67,7 +67,7 @@ class Str
      */
     public static function contains(string $haystack, $needles): bool
     {
-        foreach ((array) $needles as $needle) {
+        foreach ((array)$needles as $needle) {
             if ('' !== $needle && false !== mb_strpos($haystack, $needle)) {
                 return true;
             }
@@ -97,12 +97,12 @@ class Str
      */
     public static function limit(string $value, int $limit = 100, string $end = '...'): string
     {
-        $limit*=2;
+        $limit *= 2;
         if (mb_strwidth($value, 'UTF-8') <= $limit) {
             return $value;
         }
 
-        return rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8')).$end;
+        return rtrim(mb_strimwidth($value, 0, $limit, '', 'UTF-8')) . $end;
     }
 
     /**处理标题格式  奖每个单词的首字母转换成大写
@@ -122,8 +122,20 @@ class Str
      * @param String $needles
      * @return bool
      */
-    public static function endsWith(String $haystack,String $needles):bool
+    public static function endsWith(String $haystack, String $needles): bool
     {
-        return substr($haystack, -strlen($needles)) === (string) $needles?true:false;
+        return substr($haystack, -strlen($needles)) === (string)$needles ? true : false;
+    }
+
+    /**判断以特定字符开始
+     * @param String $haystack
+     * @param String $needles
+     * @return bool
+     * @author: hbh
+     * @Time: 2020/7/15   9:11
+     */
+    public static function startsWith(String $haystack,String $needles):bool
+    {
+        return $needles !== '' && substr($haystack, 0, strlen($needles)) === (string)$needles? true : false;
     }
 }

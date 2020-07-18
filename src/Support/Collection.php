@@ -2112,7 +2112,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     public function __get($key)
     {
         if (! in_array($key, static::$proxies)) {
-            throw new Exception("Property [{$key}] does not exist on this collection instance.");
+            return $this->get($key);
         }
         return $this->{$this->$key}(function ($value) use ($key) {
             return is_array($value) ? $value[$key] : $value->{$key};
