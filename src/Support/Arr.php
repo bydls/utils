@@ -573,7 +573,7 @@ class Arr
             return json_decode(json_encode($arr));
         }
         if (gettype($arr) != 'array') {
-            return;
+            return null;
         }
         foreach ($arr as $k => $v) {
             if (gettype($v) == 'array' || getType($v) == 'object') {
