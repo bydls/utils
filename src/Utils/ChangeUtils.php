@@ -55,5 +55,26 @@ trait ChangeUtils
         return $obj;
     }
 
-
+    /**字符串压缩
+     * @param string $str
+     * @param int $level
+     * @return string
+     * @author: hbh
+     * @Time: 2020/11/11   14:31
+     */
+    public static function str_compress(string $str,int $level = 9)
+    {
+        return base64_encode(gzcompress($str, $level));
+    }
+    /**字符串解压 被 str_compress 压缩过的
+     * @param string $str
+     * @param int $level
+     * @return string
+     * @author: hbh
+     * @Time: 2020/11/11   14:31
+     */
+    public static function str_uncompress(string $str)
+    {
+        return gzuncompress(base64_decode($str));
+    }
 }
