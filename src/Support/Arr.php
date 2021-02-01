@@ -5,7 +5,7 @@
  * @Time: 2020/7/11   15:44
  */
 
-namespace bydls\Utils;
+namespace bydls\Support;
 
 use ArrayAccess;
 

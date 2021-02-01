@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "bydls\\": "src/"
+            "bydls\\": "src/",
+            "bydls\\Support\\": "src/Support/",
         }
     }
 }
