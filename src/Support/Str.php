@@ -5,7 +5,7 @@
  * @Time: 2020/7/11   8:49
  */
 
-namespace bydls\Utils;
+namespace bydls\Support;
 
 
 class Str

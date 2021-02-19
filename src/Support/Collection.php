@@ -5,7 +5,7 @@
  * @Time: 2020/7/11   16:25
  */
 
-namespace bydls\Utils;
+namespace bydls\Support;
 
 use stdClass;
 use Countable;
