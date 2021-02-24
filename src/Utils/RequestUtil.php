@@ -41,14 +41,27 @@ trait RequestUtil
     public static function getIpLocation()
     {
         $clientIp = self::getIPAddress();
-        $ip = file_get_contents('http://ip-api.com/json/' . $clientIp . '?lang=zh-CN');
-        $ipInfo='';
-        if(!empty($ip)){
+        $url='http://ip-api.com/json/' . $clientIp . '?lang=zh-CN';
+        $opts = array(
+            'http'=>array(
+                'method'=>"GET",
+                'timeout'=>2,//单位秒
+            )
+        );
+        $ip = file_get_contents('http://ip-api.com/json/' . $clientIp . '?lang=zh-CN',false,stream_context_create($opts));
+        $ipInfo = '';
+        if (!empty($ip)) {
             $ipInfo = json_decode($ip, true);
             if ($ipInfo['status'] == 'success') {
-                return   $ipInfo['country'] . ' ' . $ipInfo['regionName'] . ' ' . $ipInfo['city'];
+                return [
+                    'ip' => $clientIp,
+                    'address' => $ipInfo['country'] . ' ' . $ipInfo['regionName'] . ' ' . $ipInfo['city']
+                ];
             } else {
-                return '';
+                return [
+                    'ip' => $clientIp,
+                    'address' => ''
+                ];
             }
 
         }
@@ -119,6 +132,28 @@ trait RequestUtil
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
 
+        $return = curl_exec($ch);
+        curl_close($ch);
+        return $return;
+    }
+
+    public static function curl_get($url,$timeout = 10,$headers = array())
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        if ($headers) {
+            $headerArr = array();
+            foreach ($headers as $n => $v) {
+                $headerArr[] = $n . ':' . $v;
+            }
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArr);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+        } else {
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_close($ch);
         $return = curl_exec($ch);
         curl_close($ch);
         return $return;
