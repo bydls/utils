@@ -129,7 +129,7 @@ trait RequestUtil
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         if ($data) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
         }
 
         $return = curl_exec($ch);
