@@ -15,7 +15,7 @@ trait DateUtil
      * @author: hbh
      * @Time: 2020/4/9   16:24
      */
-    public static function now()
+    public static function now(): string
     {
         return date('Y-m-d H:i:s');
     }
@@ -24,32 +24,34 @@ trait DateUtil
      * @author: hbh
      * @Time: 2020/4/10   14:39
      */
-    public static function addtime(){
+    public static function addtime(): string
+    {
         return time();
     }
 
     /**统一返回时间格式化
-     * @param $timetemp
-     * @return false|string
+     * @param $time_temp
+     * @return string
      * @author: hbh
      * @Time: 2020/6/3   15:17
      */
-    public static function callbackTime($timetemp){
-        return  date('Y-m-d H:i:s', $timetemp?:time());
+    public static function callbackTime(int $time_temp): string
+    {
+        return date('Y-m-d H:i:s', $time_temp ?: time());
     }
 
     /**获取N个月之前或者之后的日期(php语言的坑)
-     * @param $num
-     * @param $timestamp
-     * @return false|int
+     * @param int $num 1,往前1个月  -1往后一个月
+     * @param int $timestamp 需要转换的时间戳
+     * @return int
      * @author: hbh
      * @Time: 2020/4/10   11:59
      */
-    public static function geTodayAgoMonth($num, $timestamp) //$num  1,往前1个月  -1往后一个月      $timestamp  需要转换的时间戳
+    public static function geTodayAgoMonth(int $num,int $timestamp):int
     {
         $now = $timestamp ?: time();
         $now_day = date('d', $now);
-        if ($num == 0) return $now;
+        if ($num === 0) return $now;
         $arr = getdate($now);
         $temp_month = $arr['mon'] + $num;
         if ($num > 0) {             //先转换年月
@@ -69,13 +71,13 @@ trait DateUtil
                 $month = $temp_month;
             }
         }
-        $firstday = $year . '-' . $month . '-01';
-        $temo_day_num = date('t', strtotime($firstday));
-        if ($temo_day_num < $now_day) {          //date('t')，获取当月的总天数
-            $resutl = $year . '-' . $month . '-' . $temo_day_num;
+        $first_day = $year . '-' . $month . '-01';
+        $temp_day_num = date('t', strtotime($first_day));
+        if ($temp_day_num < $now_day) {          //date('t')，获取当月的总天数
+            $result = $year . '-' . $month . '-' . $temp_day_num;
         } else {
-            $resutl = $year . '-' . $month . '-' . $now_day;
+            $result = $year . '-' . $month . '-' . $now_day;
         }
-        return strtotime($resutl . ' ' . $arr['hours'] . ':' . $arr['minutes'] . ':' . $arr['seconds']);
+        return strtotime($result . ' ' . $arr['hours'] . ':' . $arr['minutes'] . ':' . $arr['seconds']);
     }
 }

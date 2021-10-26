@@ -54,6 +54,7 @@ trait ChangeUtils
 
         return $obj;
     }
+
     /**字符串压缩
      * @param string $str
      * @param int $level
@@ -96,5 +97,105 @@ trait ChangeUtils
             }
         }
         return $array;
+    }
+
+    /**
+     * 将数值金额转换为中文大写金额
+     * @param $amount float 金额(支持到分)
+     * @param $type   int   补整类型,0:到角补整;1:到元补整
+     * @return mixed 中文大写金额
+     */
+    function convertAmountToCn($amount, $type = 1): string
+    {
+        // 判断输出的金额是否为数字或数字字符串
+        if (!is_numeric($amount)) {
+            return "要转换的金额只能为数字!";
+        }
+
+        // 金额为0,则直接输出"零元整"
+        if ($amount == 0) {
+            return "人民币零元整";
+        }
+
+        // 金额不能为负数
+        if ($amount < 0) {
+            return "要转换的金额不能为负数!";
+        }
+
+        // 金额不能超过万亿,即12位
+        if (strlen($amount) > 12) {
+            return "要转换的金额不能为万亿及更高金额!";
+        }
+
+        // 预定义中文转换的数组
+        $digital = array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+        // 预定义单位转换的数组
+        $position = array('仟', '佰', '拾', '亿', '仟', '佰', '拾', '万', '仟', '佰', '拾', '元');
+
+        // 将金额的数值字符串拆分成数组
+        $amountArr = explode('.', $amount);
+
+        // 将整数位的数值字符串拆分成数组
+        $integerArr = str_split($amountArr[0], 1);
+
+        // 将整数部分替换成大写汉字
+        $result = '人民币';
+        $integerArrLength = count($integerArr);     // 整数位数组的长度
+        $positionLength = count($position);         // 单位数组的长度
+        for ($i = 0; $i < $integerArrLength; $i++) {
+            // 如果数值不为0,则正常转换
+            if ($integerArr[$i] !== 0) {
+                $result .= $digital[$integerArr[$i]] . $position[$positionLength - $integerArrLength + $i];
+            } else {
+                // 如果数值为0, 且单位是亿,万,元这三个的时候,则直接显示单位
+                if (($positionLength - $integerArrLength + $i + 1) % 4 === 0) {
+                    $result .= $position[$positionLength - $integerArrLength + $i];
+                }
+            }
+        }
+
+        // 如果小数位也要转换
+        if ($type === 0) {
+            // 将小数位的数值字符串拆分成数组
+            $decimalArr = str_split($amountArr[1], 1);
+            // 将角替换成大写汉字. 如果为0,则不替换
+            if ($decimalArr[0] !== 0) {
+                $result .= $digital[$decimalArr[0]] . '角';
+            }
+            // 将分替换成大写汉字. 如果为0,则不替换
+            if ($decimalArr[1] !== 0) {
+                $result .= $digital[$decimalArr[1]] . '分';
+            }
+        } else {
+            $result .= '整';
+        }
+        return $result;
+    }
+
+
+    /**格式化数字
+     * @param float $number
+     * @param int $n 保留几位小数
+     * @return string
+     */
+    public function floatNumber(float $number, int $n = 2): string
+    {
+        if ($n < 0 || $n > 4) {
+            return $number;
+
+        }
+        $number = sprintf("%." . $n . "f", $number);
+        $length = strlen($number);  //数字长度
+        $temp = ($n ? $n + 1 : 0);
+        if ($length > (8 + $temp)) { //亿单位
+
+            $str = ($n ? strstr($number, substr($number, -(8 + $temp)), ' ') . '.' . substr($number, -(8 + $temp), -(8 - $n + $temp)) : strstr($number, substr($number, -(8 + $temp)), ' ')) . "亿";
+        } elseif ($length > (4 + $temp)) { //万单位
+            //截取前俩为
+            $str = ($n ? strstr($number, substr($number, -(4 + $temp)), ' ') . '.' . substr($number, -(4 + $temp), -(4 - $n + $temp)) : strstr($number, substr($number, -(8 + $temp)), ' ')) . "万";
+        } else {
+            return $number;
+        }
+        return $str;
     }
 }

@@ -12,11 +12,11 @@ trait RequestUtil
 {
 
     /**获取用户真是IP地址
-     * @return mixed|string
+     * @return string
      * @author: hbh
      * @Time: 2020/4/9   16:21
      */
-    public static function getIPAddress()
+    public static function getIPAddress(): string
     {
         $ipAddress = '';
 
@@ -26,7 +26,7 @@ trait RequestUtil
             } else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
                 $ipAddress = $_SERVER["HTTP_CLIENT_IP"];
             } else {
-                $ipAddress = $_SERVER["REMOTE_ADDR"];
+                $ipAddress = $_SERVER["REMOTE_ADDR"] ?? '';
             }
         }
 
@@ -34,22 +34,21 @@ trait RequestUtil
     }
 
     /**根据当前ip获取所在地
-     * @return string|mixed
+     * @return array
      * @author: hbh
      * @Time: 2020/4/14   18:26
      */
-    public static function getIpLocation()
+    public static function getIpLocation(): array
     {
         $clientIp = self::getIPAddress();
-        $url='http://ip-api.com/json/' . $clientIp . '?lang=zh-CN';
+        $url = 'http://ip-api.com/json/' . $clientIp . '?lang=zh-CN';
         $opts = array(
-            'http'=>array(
-                'method'=>"GET",
-                'timeout'=>2,//单位秒
+            'http' => array(
+                'method' => "GET",
+                'timeout' => 2,//单位秒
             )
         );
-        $ip = file_get_contents('http://ip-api.com/json/' . $clientIp . '?lang=zh-CN',false,stream_context_create($opts));
-        $ipInfo = '';
+        $ip = file_get_contents('http://ip-api.com/json/' . $clientIp . '?lang=zh-CN', false, stream_context_create($opts));
         if (!empty($ip)) {
             $ipInfo = json_decode($ip, true);
             if ($ipInfo['status'] == 'success') {
@@ -65,24 +64,27 @@ trait RequestUtil
             }
 
         }
-        return $ipInfo;
+        return [];
     }
+
     /**
      * @retu将 IPV4 的字符串互联网协议转换成长整型数字rn string
      * @author: hbh
      * @Time: 2020/4/9   16:22
      */
-    public static function getLongIPAddress()
+    public static function getLongIPAddress():string
     {
         return sprintf("%u", ip2long(self::getIPAddress()));
     }
+
     /**获取请求来源的url
      * @return string
      * @author: hbh
      * @Time: 2020/4/9   17:26
      */
-    public static function get_url(){
-        return $_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?".$_SERVER["QUERY_STRING"];
+    public static function getUrl():string
+    {
+        return $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"];
     }
 
     /**获取请求来源url中的path部分
@@ -90,8 +92,9 @@ trait RequestUtil
      * @author: hbh
      * @Time: 2020/4/9   17:28
      */
-    public static function get_url_path(){
-        $url=self::get_url();
+    public static function getUrlPath()
+    {
+        $url = self::get_url();
         return trim(parse_url($url, PHP_URL_PATH));
     }
 
@@ -104,7 +107,7 @@ trait RequestUtil
      * @author: hbh
      * @Time: 2020/5/21   17:07
      */
-    public static function curl_post($url, $data, $timeout = 10, $headers = array()) {
+    public static function curlPost($url, $data, $timeout = 10, $headers = array()) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, "http://" . explode('/', $url)[2] . "/");
@@ -137,7 +140,7 @@ trait RequestUtil
         return $return;
     }
 
-    public static function curl_get($url,$timeout = 10,$headers = array())
+    public static function curlGet($url, $timeout = 10, $headers = array())
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
