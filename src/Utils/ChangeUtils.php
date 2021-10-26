@@ -11,23 +11,23 @@ namespace bydls\Utils;
 trait ChangeUtils
 {
     /**数组转对象
-     * @param $arr
+     * @param array $arr
      * @param bool $json
-     * @return mixed
+     * @return object
      * @author: hbh
      * @Time: 2020/6/3   11:37
      */
-    public static function array_to_object($arr, $json = false)
+    public static function arrayToObject(array $arr, $json = false): object
     {
         if ($json) {
             return json_decode(json_encode($arr));
         }
-        if (gettype($arr) != 'array') {
-            return;
+        if (!is_array($arr)) {
+            return null;
         }
         foreach ($arr as $k => $v) {
-            if (gettype($v) == 'array' || getType($v) == 'object') {
-                $arr[$k] = (object)array_to_object($v);
+            if (is_array($arr) || is_object($arr)) {
+                $arr[$k] = (object)self::array_to_object($v);
             }
         }
 
@@ -35,20 +35,20 @@ trait ChangeUtils
     }
 
     /**对象转数组
-     * @param $obj
-     * @return mixed
+     * @param object $obj
+     * @return array
      * @author: hbh
      * @Time: 2020/6/3   11:34
      */
-    public static function object_to_array($obj)
+    public static function objectToArray($obj): array
     {
         $obj = (array)$obj;
         foreach ($obj as $k => $v) {
-            if (gettype($v) == 'resource') {
-                return;
+            if (is_resource($v)) {
+                return [];
             }
-            if (gettype($v) == 'object' || gettype($v) == 'array') {
-                $obj[$k] = (array)object_to_array($v);
+            if (is_object($v) || is_array($v)) {
+                $obj[$k] = (array)self::objectToArray($v);
             }
         }
 
@@ -62,19 +62,18 @@ trait ChangeUtils
      * @author: hbh
      * @Time: 2020/11/11   14:31
      */
-    public static function str_compress(string $str, int $level = 9)
+    public static function strCompress(string $str, int $level = 9): string
     {
         return base64_encode(gzcompress($str, $level));
     }
 
     /**字符串解压 被 str_compress 压缩过的
      * @param string $str
-     * @param int $level
      * @return string
      * @author: hbh
      * @Time: 2020/11/11   14:31
      */
-    public static function str_uncompress(string $str)
+    public static function strUnCompress(string $str): string
     {
         return gzuncompress(base64_decode($str));
     }
@@ -86,7 +85,7 @@ trait ChangeUtils
      * @author: hbh
      * @Time: 2021/3/9   16:10
      */
-    public static function format(array &$array, $child_key = 'child')
+    public static function format(array &$array, $child_key = 'child'): array
     {
         if ($array) {
             $array = array_values($array);
@@ -99,13 +98,32 @@ trait ChangeUtils
         return $array;
     }
 
+    /**对字符串中间部分打码
+     * @param string $string
+     * @param string $mask 掩码
+     * @param int $start_len 起始长度
+     * @param int $end_len 结束长度
+     * @return string
+     */
+    public static function protectString(string $string, string $mask = '*', int $start_len = 2, int $end_len = 2): string
+    {
+        $str = '';
+        $temp = strlen($string) - $start_len - $end_len;
+        if ($temp < 1) return $string;
+        while ($temp) {
+            $str .= $mask;
+            $temp--;
+        }
+        return substr($string, 0, $start_len) . $str . substr($string, -$end_len);
+    }
+
     /**
      * 将数值金额转换为中文大写金额
      * @param $amount float 金额(支持到分)
      * @param $type   int   补整类型,0:到角补整;1:到元补整
      * @return mixed 中文大写金额
      */
-    function convertAmountToCn($amount, $type = 1): string
+    public static function convertAmountToCn($amount, $type = 1): string
     {
         // 判断输出的金额是否为数字或数字字符串
         if (!is_numeric($amount)) {
