@@ -74,4 +74,18 @@ trait CodeUtil
     {
         return uniqid(random_int(100, 999), true);
     }
+
+    /**获得随机数，默认返回 16位字符
+     * @param int $start
+     * @param int $length
+     * @return string
+     * @throws \Exception
+     * @author: hbh
+     * @Time: 2022/04/26   13:46
+     */
+    public static function getRandom($start = 16, $length = 16) {
+        return substr(md5(time() . microtime() . rand(0, 10000000)), $start, $length);
+    }
+
+
 }

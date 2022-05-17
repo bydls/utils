@@ -72,7 +72,7 @@ trait RequestUtil
      * @author: hbh
      * @Time: 2020/4/9   16:22
      */
-    public static function getLongIPAddress():string
+    public static function getLongIPAddress(): string
     {
         return sprintf("%u", ip2long(self::getIPAddress()));
     }
@@ -82,7 +82,7 @@ trait RequestUtil
      * @author: hbh
      * @Time: 2020/4/9   17:26
      */
-    public static function getUrl():string
+    public static function getUrl(): string
     {
         return $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"];
     }
@@ -107,7 +107,8 @@ trait RequestUtil
      * @author: hbh
      * @Time: 2020/5/21   17:07
      */
-    public static function curlPost($url, $data, $timeout = 10, $headers = array()) {
+    public static function curlPost($url, $data, $timeout = 10, $headers = array())
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, "http://" . explode('/', $url)[2] . "/");
@@ -132,7 +133,7 @@ trait RequestUtil
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         if ($data) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         }
 
         $return = curl_exec($ch);
@@ -160,5 +161,20 @@ trait RequestUtil
         $return = curl_exec($ch);
         curl_close($ch);
         return $return;
+    }
+
+    /**file_get_contents 跳过https证书验证
+     * @param string $url
+     * @return string
+     */
+    public static function fileGetContents(string $url): string
+    {
+        $arrContextOptions = array(
+            "ssl" => array(
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+            ),
+        );
+        return file_get_contents($url, false, stream_context_create($arrContextOptions));
     }
 }

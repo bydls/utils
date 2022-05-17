@@ -29,6 +29,67 @@ trait DateUtil
         return time();
     }
 
+    /**获取当月（指定时间戳）第一天
+     * @param $time_temp
+     * @return string
+     * @author: hbh
+     * @Time: 2022/6/3   15:17
+     */
+    public static function firstOfMonth($time_temp = 0): string
+    {
+        if (!$time_temp) {
+            $time_temp = time();
+        }
+        return date('Y-m-01', $time_temp);
+    }
+
+    /**获取当月（指定时间戳）最后一天
+     * @param $time_temp
+     * @return string
+     * @author: hbh
+     * @Time: 2022/6/3   15:17
+     */
+    public static function lastOfMonth($time_temp = 0): string
+    {
+        if (!$time_temp) {
+            $time_temp = time();
+        }
+        return date('Y-m-t', $time_temp);
+    }
+
+
+    /**获取当月（指定时间戳）第一天
+     * @param $time_temp
+     * @return string
+     * @author: hbh
+     * @Time: 2022/6/3   15:17
+     */
+    public static function firstOfYear($time_temp = 0): string
+    {
+        if (!$time_temp) {
+            $time_temp = time();
+        }
+        return date('Y-01-01', $time_temp);
+    }
+
+    /**获取当月（指定时间戳）最后一天
+     * @param $time_temp
+     * @return string
+     * @author: hbh
+     * @Time: 2022/6/3   15:17
+     */
+    public static function lastOfYear($time_temp = 0): string
+    {
+        if (!$time_temp) {
+            $time_temp = time();
+        }
+        return date('Y-12-31', $time_temp);
+    }
+
+
+
+
+
     /**统一返回时间格式化
      * @param $time_temp
      * @return string
@@ -47,7 +108,7 @@ trait DateUtil
      * @author: hbh
      * @Time: 2020/4/10   11:59
      */
-    public static function geTodayAgoMonth(int $num,int $timestamp):int
+    public static function geTodayAgoMonth(int $num, int $timestamp): int
     {
         $now = $timestamp ?: time();
         $now_day = date('d', $now);

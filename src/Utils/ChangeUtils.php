@@ -216,4 +216,63 @@ trait ChangeUtils
         }
         return $str;
     }
+
+
+    /**
+     * @Desc:解析身份证信息,转化成数组,例如:所在地区\出生日期\性别等
+     * @param string $ID_number
+     * @return array
+     * @Time: 2022/5/17 14:29
+     * @route:
+     */
+    public static function getIDnumberInfo(string $ID_number): array
+    {
+        $personal = array();
+        $ID_number = trim($ID_number . '');
+        $lenth = strlen($ID_number);
+
+        if ($lenth <> 15 && $lenth <> 18) {
+            return $personal;
+        }
+
+        $birthday = ($lenth == 15) ? ('19' . substr($ID_number, 6, 6)) : substr($ID_number, 6, 8);
+        $personal['birthday'] = date("Y-m-d", strtotime($birthday));
+
+        // 性别(0:未知;1:男;2:女)
+        $personal['sex'] = substr($ID_number, ($lenth == 18 ? -2 : -1), 1) % 2 ? '1' : '2';
+        return $personal;
+    }
+
+    /**方法/接口调用失败返回
+     * @param string $msg
+     * @param array $data
+     * @return array
+     */
+    public static function apiReturnError($msg = '', $data = []): array
+    {
+        return ['status' => -200, 'msg' => $msg, 'data' => $data];
+    }
+
+    /**方法/接口调用成功返回
+     * @param string $msg
+     * @param array $data
+     * @return array
+     */
+    public static function apiReturnSuccess($data = [], $msg = ''): array
+    {
+        return ['status' => 200, 'msg' => $msg, 'data' => $data];
+    }
+
+    /**生成签名
+     * @param array $params
+     * @return string
+     */
+    public static function sign(array $params): string
+    {
+        ksort($params);
+        $mergeStr = implode("", $params);
+        $encodedStr = urlencode($mergeStr);
+
+        return md5($encodedStr);
+    }
 }
