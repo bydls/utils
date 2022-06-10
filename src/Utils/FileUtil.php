@@ -62,4 +62,23 @@ trait FileUtil
         }
         return $iUnits * pow(1024, $aUnits[$sUnit]) . 'B';
     }
+
+
+    /**创建目录
+     * @param string $dir
+     * @param string $mode
+     * @return bool
+     * @author: hbh
+     * @Time: 2022/5/17 17:15
+     */
+    public static function createDirectory(string $dir, string $mode): bool
+    {
+        if (is_dir($dir) || @mkdir($dir, $mode)) {
+            return true;
+        }
+        if (!mkdir(dirname($dir), $mode)) {
+            return false;
+        }
+        return @mkdir($dir, $mode);
+    }
 }

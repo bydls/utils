@@ -275,4 +275,23 @@ trait ChangeUtils
 
         return md5($encodedStr);
     }
+
+
+    /**获取数组/对象中某字段的值，如果没有则赋予默认值
+     * @param  $data
+     * @param string $element
+     * @param  $default
+     * @return string
+     */
+    public function fetch($data, string $element, $default = '')
+    {
+        $return = $default;
+        if (true === is_object($data) && true === isset($data->$element)) {
+            $return = $data->$element;
+        } elseif (true === is_array($data) && true === isset($data[$element])) {
+            $return = $data[$element];
+        }
+
+        return $return;
+    }
 }

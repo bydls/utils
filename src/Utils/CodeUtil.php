@@ -14,10 +14,10 @@ trait CodeUtil
     /**生成指定位数的随机数
      * @param int $length
      * @return string
-     * @throws \Exception
      * @author: hbh
      * @Time: 2020/7/11   10:27
      */
+
     public static function random(int $length = 16): string
     {
         $string = '';
@@ -34,13 +34,13 @@ trait CodeUtil
     }
 
     /**对密码进行加密
-     * @param $password
-     * @param $salt //建议自己保存一个固定的扰码
+     * @param string $password
+     * @param string $salt 建议自己保存一个固定的扰码
      * @return string
      * @author: hbh
      * @Time: 2020/4/9   19:14
      */
-    public static function hashMixed(string $password, string $salt = 'bydls'):string
+    public static function hashMixed(string $password, string $salt = 'bydls'): string
     {
         $pwd_md5 = md5($password);
         $salt_md5 = isset($salt) ? md5($salt) : $pwd_md5;
@@ -54,11 +54,11 @@ trait CodeUtil
      * @param int $min 最小边界
      * @param int $max 最大边界
      * @param int $precision 小数点精度
-     * @return false|float
+     * @return  float
      * @author: hbh
      * @Time: 2020/6/3   10:47
      */
-    public static function randomFloat(int $min = 0,int $max = 1,int $precision = 2):float
+    public static function randomFloat(int $min = 0, int $max = 1, int $precision = 2): float
     {
         return round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
     }
@@ -66,10 +66,10 @@ trait CodeUtil
 
     /**生成一个唯一的 ID
      * @return string
-     * @throws \Exception
      * @author: hbh
      * @Time: 2021/10/26   13:46
      */
+
     public static function getUniqueStr(): string
     {
         return uniqid(random_int(100, 999), true);
@@ -79,11 +79,11 @@ trait CodeUtil
      * @param int $start
      * @param int $length
      * @return string
-     * @throws \Exception
      * @author: hbh
      * @Time: 2022/04/26   13:46
      */
-    public static function getRandom($start = 16, $length = 16) {
+    public static function getRandom($start = 16, $length = 16)
+    {
         return substr(md5(time() . microtime() . rand(0, 10000000)), $start, $length);
     }
 
