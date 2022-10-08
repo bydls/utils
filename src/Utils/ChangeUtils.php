@@ -225,7 +225,7 @@ trait ChangeUtils
      * @Time: 2022/5/17 14:29
      * @route:
      */
-    public static function getIDnumberInfo(string $ID_number): array
+    public static function getIdNumberInfo(string $ID_number): array
     {
         $personal = array();
         $ID_number = trim($ID_number . '');
@@ -293,5 +293,32 @@ trait ChangeUtils
         }
 
         return $return;
+    }
+
+
+    /**
+     * @Desc:数组元素转成字符串格式
+     * @param array $array
+     * @return array
+     * @author: hbh
+     * @Time: 2022/10/8 9:51
+     */
+    public static function arrayItemToString(array &$array): array
+    {
+        if (empty($array)) {
+            return $array;
+        }
+
+        foreach ($array as &$item) {
+            if (is_array($item)) {
+                $item = self::arrayItemToString($item);
+            } elseif ($item === false) {
+                $item = '0';
+            } else {
+                $item = strval($item);
+            }
+
+        }
+        return $array;
     }
 }
