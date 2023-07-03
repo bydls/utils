@@ -217,13 +217,23 @@ trait ChangeUtils
         return $str;
     }
 
+    /**
+     * @Desc:金额格式化
+     * @param float $amount
+     * @return string
+     * @Time: 2023/7/3 9:43
+     */
+    public static function formatAmount(float $amount): string
+    {
+
+        return  number_format($amount, 2, '.', ',');
+    }
 
     /**
      * @Desc:解析身份证信息,转化成数组,例如:所在地区\出生日期\性别等
      * @param string $ID_number
      * @return array
      * @Time: 2022/5/17 14:29
-     * @route:
      */
     public static function getIdNumberInfo(string $ID_number): array
     {
@@ -327,7 +337,6 @@ trait ChangeUtils
      * @param $account_number
      * @return string
      * @Time: 2023/3/24 11:43
-     * @route:
      */
     public static function protectAccountNumber($account_number)
     {
@@ -346,7 +355,6 @@ trait ChangeUtils
      * @param $certificate_no
      * @return string
      * @Time: 2023/3/24 11:43
-     * @route:
      */
     public static function protectCertificateNo($certificate_no)
     {
