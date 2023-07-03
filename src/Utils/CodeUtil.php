@@ -70,10 +70,11 @@ trait CodeUtil
      * @Time: 2021/10/26   13:46
      */
 
-    public static function getUniqueStr(): string
+    public static function getUniqueStr()
     {
-        return uniqid(random_int(100, 999), true);
+        return uniqid(mt_rand(100, 999), true);
     }
+
 
     /**获得随机数，默认返回 16位字符
      * @param int $start

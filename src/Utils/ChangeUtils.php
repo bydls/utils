@@ -196,7 +196,7 @@ trait ChangeUtils
      * @param int $n 保留几位小数
      * @return string
      */
-    public function floatNumber(float $number, int $n = 2): string
+    public static function floatNumber(float $number, int $n = 2): string
     {
         if ($n < 0 || $n > 4) {
             return $number;
@@ -283,7 +283,7 @@ trait ChangeUtils
      * @param  $default
      * @return string
      */
-    public function fetch($data, string $element, $default = '')
+    public static function fetch($data, string $element, $default = '')
     {
         $return = $default;
         if (true === is_object($data) && true === isset($data->$element)) {
@@ -320,5 +320,36 @@ trait ChangeUtils
 
         }
         return $array;
+    }
+
+    /**
+     * @Desc:银行账号脱敏
+     * @param $account_number
+     * @return string
+     * @Time: 2023/3/24 11:43
+     * @route:
+     */
+    public static function protectAccountNumber($account_number)
+    {
+        if ($account_number !== null && $account_number !== '') {
+            if (strpos('-', $account_number) !== false) {
+                //有-说明是子账号
+                return self::protectString($account_number, '*', 4, 9);
+            }
+            return self::protectString($account_number, '*', 4, 4);
+        }
+        return $account_number;
+    }
+
+    /**
+     * @Desc:证件号码脱敏
+     * @param $certificate_no
+     * @return string
+     * @Time: 2023/3/24 11:43
+     * @route:
+     */
+    public static function protectCertificateNo($certificate_no)
+    {
+        return self::protectString($certificate_no, '*', 3, 4);
     }
 }
