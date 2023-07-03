@@ -226,7 +226,7 @@ trait ChangeUtils
     public static function formatAmount(float $amount): string
     {
 
-        return  number_format($amount, 2, '.', ',');
+        return number_format($amount, 2, '.', ',');
     }
 
     /**
@@ -341,7 +341,7 @@ trait ChangeUtils
     public static function protectAccountNumber($account_number)
     {
         if ($account_number !== null && $account_number !== '') {
-            if (strpos('-', $account_number) !== false) {
+            if (stripos($account_number, '-') !== false) {
                 //有-说明是子账号
                 return self::protectString($account_number, '*', 4, 9);
             }
